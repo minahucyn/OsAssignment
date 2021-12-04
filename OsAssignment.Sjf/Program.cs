@@ -71,8 +71,6 @@ namespace OsAssignment.Sjf
 
         private static void OnProcessingCompleted(object sender, EventArgs e)
         {
-            //do exporting or what ever
-
             _processingCompleted = true;
         }
 
