@@ -30,7 +30,26 @@ namespace OsAssignment.Sjf
         private static bool _processingCompleted;
         private static bool _processingStarted;
 
-        static void Main(string[] args)
+        public static List<ExportStatistics> InitializeAndRunSjf(SjfType sjfType, int noOfRuns = 10)
+        {
+
+            int i = 0;
+            int numberOfRuns = noOfRuns;
+            var allProcessBatches = new List<Process>();
+
+            while (i <= numberOfRuns)
+            {
+                var processBatch = RunSjf();
+                allProcessBatches.AddRange(processBatch);
+                i++;
+            }
+
+            //calculate average wait time and turn around time for each process
+            return Functions.CalculateStatistics(allProcessBatches);
+            
+        }
+
+        private static List<Process> RunSjf()
         {
             //generate a list of processes with random arrival and burst times
             _allProcesses = Functions.GenerateInitialProcessSetup();
@@ -46,7 +65,8 @@ namespace OsAssignment.Sjf
                 OnCpuCycle();
                 //Thread.Sleep(500);
             }
-            Console.WriteLine("--------------------!");
+
+            return _allProcesses;
         }
 
         private static void OnProcessingCompleted(object sender, EventArgs e)

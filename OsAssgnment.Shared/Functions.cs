@@ -11,6 +11,28 @@ namespace OsAssgnment.Shared
 {
     public static class Functions
     {
+        public static List<ExportStatistics> CalculateStatistics(List<Process> allProcessBatches)
+        {
+            //list of fcfs statitsics to return
+            var statistics = new List<ExportStatistics>();
+            for (int i = 1; i <= 100; i++)
+            {
+                string pId = "P" + i;
+                // IEnumerable<string> results = myList.Where(s => s == search);
+                var matches = allProcessBatches.Where(p => p.ProcessId == pId);
+                var averageWaitTime = matches.Select(x => x.WaitTime).Average();
+                var averageTat = matches.Select(x => x.TurnAroundTime).Average();
+
+                statistics.Add(new ExportStatistics() { Pid = pId, AverageTat = averageTat, AverageWaitTime = averageWaitTime });
+            }
+            //iterate from 1 to 100 looking for P1 to P100 respectively
+            //find required averagres for each process... avgs of all P1 processes
+            // add to return list
+
+            //finally... return
+
+            return statistics;
+        }
         public static void WriteCsvOutput(List<ExportStatistics> fcfsStatistics)
         {
             using (var writer = new StreamWriter("D:\\fcfs.csv"))

@@ -17,7 +17,24 @@ namespace OsAssignment.RoundRobin
         private readonly static int _timeQuantum = 3;
         private static int _reminingCyclesForProcess;
 
-        static void Main(string[] args)
+        public static List<ExportStatistics> InitalizeAndRunRoundRobin(int noOfRuns)
+        {
+            int i = 0;
+            int numberOfRuns = noOfRuns;
+            var allProcessBatches = new List<Process>();
+
+            while (i <= numberOfRuns)
+            {
+                var processBatch = RunRoundRobin(); ;
+                allProcessBatches.AddRange(processBatch);
+                i++;
+            }
+
+            //calculate average wait time and turn around time for each process
+            return Functions.CalculateStatistics(allProcessBatches);
+        }
+
+        private static List<Process> RunRoundRobin()
         {
             //generate a list of processes with random arrival and burst times
             _allProcesses = Functions.GenerateInitialProcessSetup();
@@ -35,7 +52,8 @@ namespace OsAssignment.RoundRobin
                 OnCpuCycle();
                 //Thread.Sleep(500);
             }
-            Console.WriteLine("--------------------!");
+
+            return _allProcesses;
         }
 
         private static void OnProcessingCompleted(object sender, EventArgs e)

@@ -7,10 +7,10 @@ namespace OsAssignment.Fcfs
     public class Program
     {
 
-        static void Main(string[] args)
+        public static List<ExportStatistics> InitilizeAndRunFcfs(int noOfRuns = 10)
         {
             int i = 0;
-            int numberOfRuns = 10;
+            int numberOfRuns = noOfRuns;
             var allProcessBatches = new List<Process>();
 
             while (i <= numberOfRuns)
@@ -21,33 +21,7 @@ namespace OsAssignment.Fcfs
             }
 
             //calculate average wait time and turn around time for each process
-            var exportStatistics = CalculateFcfsStatistics(allProcessBatches);
-            Functions.WriteCsvOutput(exportStatistics);
-
-        }
-
-
-        private static List<ExportStatistics> CalculateFcfsStatistics(List<Process> allProcessBatches)
-        {
-            //list of fcfs statitsics to return
-            var statistics = new List<ExportStatistics>();
-            for (int i = 1; i <= 100; i++)
-            {
-                string pId = "P" + i;
-                // IEnumerable<string> results = myList.Where(s => s == search);
-                var matches = allProcessBatches.Where(p => p.ProcessId == pId);
-                var averageWaitTime = matches.Select(x => x.WaitTime).Average();
-                var averageTat = matches.Select(x => x.TurnAroundTime).Average();
-
-                statistics.Add(new ExportStatistics() { Pid = pId, AverageTat = averageTat, AverageWaitTime = averageWaitTime });
-            }
-            //iterate from 1 to 100 looking for P1 to P100 respectively
-            //find required averagres for each process... avgs of all P1 processes
-            // add to return list
-
-            //finally... return
-
-            return statistics;
+            return Functions.CalculateStatistics(allProcessBatches);
         }
 
         private static List<Process> RunFcfs()
